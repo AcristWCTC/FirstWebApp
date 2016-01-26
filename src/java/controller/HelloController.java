@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.HelloService;
 
 /**
  *
@@ -36,17 +37,21 @@ public class HelloController extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             String name = request.getParameter("username");
-            String age = request.getParameter("age");
-            String responseMsg = "Hello " + name + ", isn't Java Great! BTW You are " + age + " years old";
+            
+            HelloService helloSrv = new HelloService();
+            String responseMsg = helloSrv.sayHello(name);
+            
             request.setAttribute("myMsg", responseMsg);
+            
+                    RequestDispatcher view
+                = request.getRequestDispatcher("/helloResponse.jsp");
+        view.forward(request, response);
 
         } catch (Exception e) {
             request.setAttribute("errorMsg", e.getMessage());
         }
 
-        RequestDispatcher view
-                = request.getRequestDispatcher("/helloResponse.jsp");
-        view.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
